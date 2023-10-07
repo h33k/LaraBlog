@@ -32,3 +32,8 @@ Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middlewar
 
 // Profile
 Route::get('/profile/{user:username}', [ProfileController::class, 'profile']);
+
+
+Route::get('/admin', function() {
+    return (Gate::allows('visitAdminPages')) ? 'Hello, admin' : redirect('/');
+});
