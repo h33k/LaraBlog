@@ -32,6 +32,8 @@ Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middlewar
 
 // Profile
 Route::get('/profile/{user:username}', [ProfileController::class, 'profile']);
+Route::get('/manage-avatar', [ProfileController::class, 'showAvatarForm'])->middleware('auth');
+Route::post('/manage-avatar', [ProfileController::class, 'storeAvatar'])->middleware('auth');
 
 
 Route::get('/admin', function() {

@@ -15,8 +15,8 @@
       </div>
 
       <p class="text-muted small mb-4">
-        <a href="#"><img class="avatar-tiny" src="https://i.pinimg.com/originals/2c/9c/20/2c9c20954029da1dec1020493d9b1347.jpg" /></a>
-        Posted by <a href="#">{{$post->user->username }}</a> on {{$post->created_at->format('n/j/Y')}}
+        <a href="#"><img class="avatar-tiny" src="{{$post->user->avatar}}" /></a>
+        Posted by <a href="#">{{$post->user->username}}</a> on {{$post->created_at->format('n/j/Y')}}
       </p>
 
       <div class="body-content">
