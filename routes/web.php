@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -32,6 +33,8 @@ Route::put('/post/{post}', [PostController::class, 'actuallyUpdate'])->middlewar
 
 // Profile
 Route::get('/profile/{user:username}', [ProfileController::class, 'profile']);
+Route::get('/profile/{user:username}/followers', [ProfileController::class, 'profileFollowers']);
+Route::get('/profile/{user:username}/following', [ProfileController::class, 'profileFollowing']);
 Route::get('/manage-avatar', [ProfileController::class, 'showAvatarForm'])->middleware('auth');
 Route::post('/manage-avatar', [ProfileController::class, 'storeAvatar'])->middleware('auth');
 
@@ -39,3 +42,7 @@ Route::post('/manage-avatar', [ProfileController::class, 'storeAvatar'])->middle
 Route::get('/admin', function() {
     return (Gate::allows('visitAdminPages')) ? 'Hello, admin' : redirect('/');
 });
+
+// Follows
+Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])->middleware('auth');
+Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])->middleware('auth');
