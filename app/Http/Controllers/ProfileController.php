@@ -34,8 +34,7 @@ class ProfileController extends Controller
 
         $user->avatar = $filename;
         $user->save();
-
-        if ($oldAvatar != '/avatars/default_avatar.jpg') {
+        if ($oldAvatar != '/storage/avatars/default_avatar.jpg') {
             Storage::delete(str_replace('/storage/', 'public/', $oldAvatar));
         }
 
