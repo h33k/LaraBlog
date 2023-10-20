@@ -44,4 +44,7 @@
         <button class="btn btn-primary">Save New Post</button>
       </form>
     </div>
+    <script>
+        function displayGuideContent() {document.getElementById('guide-content').classList.toggle('d-none')}
+    </script>
 </x-layout>

@@ -1,7 +1,9 @@
 <?php
 
+use App\Events\ChatMessage;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
@@ -47,3 +49,19 @@ Route::get('/admin', function() {
 // Follows
 Route::post('/create-follow/{user:username}', [FollowController::class, 'createFollow'])->middleware('auth');
 Route::post('/remove-follow/{user:username}', [FollowController::class, 'removeFollow'])->middleware('auth');
+
+
+// Chat
+Route::post('/send-chat-message', function(Request $request) {
+    $formFields = $request->validate([
+        'textvalue' => 'required'
+    ]);
+
+    if (!trim(strip_tags($formFields['textvalue']))) {
+        return response()->noContent();
+    }
+
+    broadcast(new ChatMessage(['username' => auth()->user()->username, 'textvalue' => strip_tags($request->textvalue), 'avatar' => auth()->user()->avatar]))->toOthers();
+    return response()->noContent();
+
+})->middleware('auth');
