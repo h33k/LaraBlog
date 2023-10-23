@@ -23,13 +23,9 @@ class ProfileController extends Controller
         ]);
 
         $user = auth()->user();
-
         $filename = $user->id . '_' . uniqid() . '.jpg';
-
         $formatImg = Image::make($request->file('avatar'))->fit(120)->encode('jpg');
-
         Storage::put('public/avatars/' . $filename, $formatImg);
-
         $oldAvatar = $user->avatar;
 
         $user->avatar = $filename;
@@ -43,32 +39,36 @@ class ProfileController extends Controller
 
     private function getSharedData($user) {
         $currentlyFollowing = false;
-
         if (auth()->check()) {
             $currentlyFollowing = Follow::where([['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
         }
-
         View::share('sharedData', ['currentlyFollowing' => $currentlyFollowing, 'avatar' => $user->avatar, 'username' => $user->username, 'postCount' => $user->posts()->count(), 'followersCount' => $user->followers()->count(), 'followingCount' => $user->followingTheseUsers()->count()]);
     }
 
     public function profile(User $user) {
-
         $this->getSharedData($user);
         return view('profile-posts', ['posts' => $user->posts()->latest()->paginate(6)]);
+    }
 
+    public function profileRaw(User $user) {
+        return response()->json(['theHTML' =>  view('profile-posts-only', ['posts' => $user->posts()->latest()->paginate(6)])->render(), 'docTitle' => $user->username . "'s Profile"]);
     }
 
     public function profileFollowers(User $user) {
-
         $this->getSharedData($user);
         return view('profile-followers', ['followers' => $user->followers()->latest()->get()]);
+    }
 
+    public function profileFollowersRaw(User $user) {
+        return response()->json(['theHTML' =>  view('profile-followers-only', ['followers' => $user->followers()->latest()->paginate(6)])->render(), 'docTitle' => $user->username . "'s Followers"]);
     }
 
     public function profileFollowing(User $user) {
-
         $this->getSharedData($user);
         return view('profile-following', ['following' => $user->followingTheseUsers()->latest()->get()]);
+    }
 
+    public function profileFollowingRaw(User $user) {
+        return response()->json(['theHTML' =>  view('profile-following-only', ['following' => $user->followingTheseUsers()->latest()->paginate(6)])->render(), 'docTitle' => 'Who ' . $user->username . " Follows"]);
     }
 }

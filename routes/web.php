@@ -38,6 +38,14 @@ Route::get('/search/{term}', [PostController::class, 'search']);
 Route::get('/profile/{user:username}', [ProfileController::class, 'profile']);
 Route::get('/profile/{user:username}/followers', [ProfileController::class, 'profileFollowers']);
 Route::get('/profile/{user:username}/following', [ProfileController::class, 'profileFollowing']);
+
+Route::middleware('cache.headers:public;max_age=20;etag')->group(function() {
+    Route::get('/profile/{user:username}/raw', [ProfileController::class, 'profileRaw']);
+    Route::get('/profile/{user:username}/followers/raw', [ProfileController::class, 'profileFollowersRaw']);
+    Route::get('/profile/{user:username}/following/raw', [ProfileController::class, 'profileFollowingRaw']);
+});
+
+
 Route::get('/manage-avatar', [ProfileController::class, 'showAvatarForm'])->middleware('auth');
 Route::post('/manage-avatar', [ProfileController::class, 'storeAvatar'])->middleware('auth');
 
