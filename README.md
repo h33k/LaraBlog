@@ -11,4 +11,5 @@ After cloning the project, follow these steps:
 2. npm install
 3. create mysql database
 4. create and edit .env file (copy parameters from .env.example)
-5. php artisan storage:link (to change files storage directory)
+5. create your channels app on pusher.com and write app keys in .env (chat feature)
+6. php artisan storage:link (to change files storage directory)
