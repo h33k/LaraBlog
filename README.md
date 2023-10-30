@@ -1,4 +1,4 @@
-### LaraBlog
+### Description
 
 LaraBlog is a blog app created with Laravel. You can create posts, follow other people and chat with them.
 
